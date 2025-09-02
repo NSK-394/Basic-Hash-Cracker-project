@@ -1,4 +1,4 @@
-Basic Hash Cracker 🔑
+# Basic Hash Cracker 🔑
 
 A simple Python tool to crack MD5 and SHA1 hashes using a wordlist.
 This project is perfect for learning hashing, password security, and brute-force techniques in cybersecurity.
