@@ -1,75 +1,34 @@
-# Basic Hash Cracker 🔑
+# Basic Hash Cracker
 
-A simple Python tool to crack MD5 and SHA1 hashes using a wordlist.
-This project is perfect for learning hashing, password security, and brute-force techniques in cybersecurity.
+![tests](https://github.com/NSK-394/Basic-Hash-Cracker-project/actions/workflows/tests.yml/badge.svg)
 
-Features
+A small, educational dictionary-based hash lookup tool. Given a hash and a wordlist, it hashes each candidate word and reports the first match. It's a coursework demo of **why unsalted, fast hashes (MD5 and the SHA family) are a poor way to store passwords** — a laptop can test millions of candidates per second against them.
 
-Supports MD5 and SHA1 hashes.
+> **Legal & ethical use:** only run this against hashes from systems you own or are explicitly authorized to test (your own practice data, a CTF, a lab). It is not a tool for attacking other people's credentials.
 
-Uses a custom wordlist (like rockyou.txt) for cracking.
+## Features
+- Dictionary attack against **MD5, SHA-1, SHA-256, SHA-512**
+- Simple CLI with a selectable algorithm
+- Clear exit codes (0 = found, 2 = not found) so it scripts cleanly
 
-Stops immediately when the password is found.
+## Usage
+```bash
+# md5("password") -> look it up in a wordlist
+python hash_cracker.py 5f4dcc3b5aa765d61d8327deb882cf99 wordlist.txt -a md5
 
-Handles large wordlists with proper encoding (latin-1).
+# sha256
+python hash_cracker.py <hexdigest> rockyou.txt -a sha256
+```
 
-Prints clear messages if hash not found or file missing.
+## Why dictionary, not brute force
+A dictionary attack works because real passwords are rarely random — they come from a predictable space (common passwords, names, leaked lists). That's the actual lesson here: the weakness is password *choice* and the use of fast, unsalted hashes, not raw compute. Proper password storage uses a slow, salted KDF (bcrypt, scrypt, Argon2) specifically to make this kind of lookup impractical.
 
-Installation
+## Limitations
+- Dictionary lookup only — it finds a password only if it's in the wordlist you give it
+- No salt handling (these demo hashes are unsalted; real systems should be salted)
+- Single-threaded; it's a teaching tool, not a performance tool
 
-Clone the repository:
-
-git clone https://github.com/your-username/Basic-Hash-Cracker.git
-
-
-Navigate to the project folder:
-
-cd Basic-Hash-Cracker
-
-
-Make sure you have Python 3 installed.
-
-Usage
-
-Run the script:
-
-python hash_cracker.py
-
-
-Enter the hash value to crack:
-e.g., 5f4dcc3b5aa765d61d8327deb882cf99
-
-Enter the hash type (md5/sha1):
-e.g., md5
-
-Enter the path to the wordlist file:
-e.g., rockyou.txt or mini_wordlist.txt
-
-Example Output:
-
-✅ Password found: password
-
-Example Wordlist
-
-You can use a mini wordlist for testing:
-
-123456
-password
-letmein
-admin
-welcome
-
-
-Or use the famous rockyou.txt for full testing.
-
-Notes
-
-Large wordlists may take time to brute-force.
-
-Only attempt cracking hashes you are authorized to test.
-
-Encoding is set to latin-1 for compatibility with common wordlists.
-
-License
-
-This project is for educational purposes only. Unauthorized use on others’ data is strictly prohibited.
+## Tests
+```bash
+pip install pytest && pytest -q
+```
